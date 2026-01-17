@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ELI5 // Tech Simplified</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;500;700&display=swap" rel="stylesheet">
+</head>
+<body class="dark-theme">
+    <div class="mesh-gradient"></div>
+    
+    <nav class="sidebar">
+        <div class="logo">
+            <span class="logo-icon">✨</span>
+            <span class="logo-text">ELI5</span>
+        </div>
+        <div class="topic-list" id="topicList">
+            </div>
+        <div class="sidebar-footer">
+            <button class="theme-toggle" id="themeToggle">🌓 Mode</button>
+        </div>
+    </nav>
+
+    <main class="content-stage">
+        <header class="app-header">
+            <div class="header-info">
+                <h1 id="activeTopicTitle">Welcome to ELI5</h1>
+                <p id="activeTopicTagline">Select a topic to demystify complex tech.</p>
+            </div>
+            
+            <div class="difficulty-switcher">
+                <button class="level-btn" data-level="child"><span>👶</span> Child</button>
+                <button class="level-btn active" data-level="beginner"><span>🎓</span> Beginner</button>
+                <button class="level-btn" data-level="pro"><span>🧠</span> Pro</button>
+            </div>
+        </header>
+
+        <section class="explanation-viewport">
+            <div class="glass-card main-card">
+                <div class="card-header">
+                    <span class="reading-time" id="readingTime">0 min read</span>
+                    <div class="card-controls">
+                        <button class="icon-btn" id="favoriteBtn" title="Favorite">❤️</button>
+                        <button class="icon-btn" id="copyBtn" title="Copy Text">🔗</button>
+                        <button class="icon-btn" id="speakBtn" title="Listen">🔊</button>
+                    </div>
+                </div>
+                <div class="text-container">
+                    <p id="displayText" class="type-animation">Select a technical concept from the sidebar to begin your journey...</p>
+                </div>
+            </div>
+        </section>
+    </nav>
+
+    <div id="toast" class="toast">Action Successful!</div>
+
+    <script src="data.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
