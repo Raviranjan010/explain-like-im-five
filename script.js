@@ -1,72 +1,102 @@
-const topicsData = [
-    {
-        id: "blockchain",
-        title: "Blockchain",
-        icon: "⛓️",
-        content: {
-            child: "Imagine a digital Lego tower where everyone keeps an eye on the blocks so no one can cheat!",
-            beginner: "A digital ledger where information is stored in linked blocks across many computers, making it secure and decentralized.",
-            pro: "A distributed ledger technology utilizing cryptographic hashing and consensus mechanisms to ensure data immutability."
-        },
-        tags: ["Digital Ledger", "Decentralized", "Secure"]
-    },
-    { id: "ai", title: "AI", icon: "🤖" },
-    { id: "internet", title: "Internet", icon: "🌐" }
-];
+const state = {
+    topics: [],
+    currentTopic: null,
+    level: localStorage.getItem('eli5_level') || 'child',
+    isDark: localStorage.getItem('eli5_theme') === 'dark'
+};
 
-let currentLevel = 'beginner';
-let currentTopic = topicsData[0];
-
-function init() {
-    renderTopicGrid();
+// Initialize
+async function init() {
+    // In a real app, use fetch('data/topics.json')
+    // For this demo, we'll use a constant or local data
+    state.topics = [
+        { id: 'ai', title: 'Artificial Intelligence', icon: '🤖', explanations: { child: "A robot brain that learns like you!", beginner: "Software that mimics human thought.", pro: "Neural networks processing <span class='highlight'>big data</span>." } },
+        { id: 'blockchain', title: 'Blockchain', icon: '🔗', explanations: { child: "A digital Lego tower everyone watches.", beginner: "A shared digital record book.", pro: "<span class='highlight'>Decentralized</span> ledger technology." } }
+    ];
+    
+    renderTopics();
     setupEventListeners();
-    updateDisplay();
+    applyTheme();
 }
 
-function renderTopicGrid() {
-    const grid = document.getElementById('topicGrid');
-    topicsData.forEach(topic => {
-        const item = document.createElement('div');
-        item.className = `topic-item ${currentTopic.id === topic.id ? 'active' : ''}`;
-        item.innerHTML = `
-            <div class="topic-icon-wrap">${topic.icon}</div>
-            <p>${topic.title}</p>
-        `;
-        item.onclick = () => {
-            currentTopic = topic;
-            updateDisplay();
-        };
-        grid.appendChild(item);
-    });
+function renderTopics() {
+    const grid = document.getElementById('topic-grid');
+    grid.innerHTML = state.topics.map(t => `
+        <div class="topic-card glass" onclick="selectTopic('${t.id}')">
+            <div style="font-size: 2rem">${t.icon}</div>
+            <div style="font-size: 0.8rem; font-weight: 600; margin-top:10px">${t.title}</div>
+        </div>
+    `).join('');
 }
 
-function updateDisplay() {
-    const textEl = document.getElementById('explanationText');
-    const titleEl = document.getElementById('topicTitle');
+function selectTopic(id) {
+    state.currentTopic = state.topics.find(t => t.id === id);
+    updateUI();
+}
+
+function updateUI() {
+    if (!state.currentTopic) return;
     
-    titleEl.innerText = `What's ${currentTopic.title}?`;
+    const text = state.currentTopic.explanations[state.level];
+    document.getElementById('topic-title').innerText = state.currentTopic.title;
+    document.getElementById('illustration').innerText = state.currentTopic.icon;
     
-    // Typewriter effect trigger
-    textEl.classList.remove('typing');
-    void textEl.offsetWidth; // Reset animation
-    textEl.innerText = currentTopic.content[currentLevel] || "Coming soon...";
-    textEl.classList.add('typing');
+    typeWriter(text);
+    calculateReadingTime(text);
+}
+
+function typeWriter(text) {
+    const el = document.getElementById('explanation-text');
+    el.innerHTML = '';
+    let i = 0;
+    const speed = state.level === 'child' ? 50 : 20; // Slower for kids
+    
+    function type() {
+        if (i < text.length) {
+            // Handle HTML tags for Pro mode highlights
+            if (text[i] === '<') {
+                const tagEnd = text.indexOf('>', i);
+                el.innerHTML += text.substring(i, tagEnd + 1);
+                i = tagEnd + 1;
+            } else {
+                el.innerHTML += text[i];
+                i++;
+            }
+            setTimeout(type, speed);
+        }
+    }
+    type();
 }
 
 function setupEventListeners() {
-    document.querySelectorAll('.level-btn').forEach(btn => {
-        btn.onclick = (e) => {
-            document.querySelectorAll('.level-btn').forEach(b => b.classList.remove('active'));
+    // Difficulty buttons
+    document.querySelectorAll('.diff-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            document.querySelectorAll('.diff-btn').forEach(b => b.classList.remove('active'));
             e.target.classList.add('active');
-            currentLevel = e.target.dataset.level;
-            updateDisplay();
-        };
+            state.level = e.target.dataset.level;
+            localStorage.setItem('eli5_level', state.level);
+            updateUI();
+        });
     });
 
-    document.getElementById('copyBtn').onclick = () => {
-        navigator.clipboard.writeText(document.getElementById('explanationText').innerText);
-        alert("Copied to clipboard!");
-    };
+    // Theme Toggle
+    document.getElementById('theme-toggle').addEventListener('click', () => {
+        state.isDark = !state.isDark;
+        applyTheme();
+    });
 }
 
+function applyTheme() {
+    document.documentElement.setAttribute('data-theme', state.isDark ? 'dark' : 'light');
+    localStorage.setItem('eli5_theme', state.isDark ? 'dark' : 'light');
+}
+
+function calculateReadingTime(text) {
+    const words = text.split(' ').length;
+    const time = Math.ceil(words / 200);
+    document.getElementById('reading-time').innerText = `${time} min read`;
+}
+
+// Start
 init();
