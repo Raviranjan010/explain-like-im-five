@@ -1,117 +1,99 @@
-:root {
-    --primary: #6366F1;
-    --secondary: #22C55E;
-    --accent: #F97316;
-    --bg: #030712;
-    --glass-bg: rgba(15, 23, 42, 0.6);
-    --glass-border: rgba(255, 255, 255, 0.1);
-    --text: #f8fafc;
-    --text-dim: #94a3b8;
+const topics = [
+    {
+        id: "api",
+        title: "API",
+        category: "Backend",
+        tagline: "The digital waiter",
+        icon: "🔌",
+        content: {
+            child: "An API is like a waiter. You tell them what you want, they tell the kitchen, and bring back your food! 🍕",
+            beginner: "Application Programming Interfaces allow applications to communicate through defined rules and requests.",
+            pro: "An API is an abstraction layer implementing REST/GraphQL protocols for stateless system-to-system communication."
+        },
+        keywords: ["abstraction layer", "stateless", "protocols"],
+        code: `fetch('https://api.eli5.com/data')\n .then(res => res.json())`
+    }
+    // ... more topics here
+];
+
+let state = {
+    activeTopic: null,
+    level: 'beginner',
+    viewed: new Set()
+};
+
+// --- Initialization ---
+function init() {
+    renderList(topics);
+    setupEventListeners();
+    updateProgress();
 }
 
-* { margin: 0; padding: 0; box-sizing: border-box; }
-
-body {
-    background-color: var(--bg);
-    color: var(--text);
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    display: flex;
-    min-height: 100vh;
+function renderList(data) {
+    const container = document.getElementById('topicList');
+    container.innerHTML = '';
+    
+    data.forEach(topic => {
+        const div = document.createElement('div');
+        div.className = `topic-item ${state.activeTopic?.id === topic.id ? 'active' : ''}`;
+        div.innerHTML = `<span>${topic.icon}</span> <span>${topic.title}</span>`;
+        div.onclick = () => selectTopic(topic);
+        container.appendChild(div);
+    });
 }
 
-/* Background Animated Blobs */
-.mesh-gradient {
-    position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    z-index: -1;
-    background: 
-        radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.15) 0px, transparent 50%),
-        radial-gradient(at 100% 100%, rgba(34, 197, 94, 0.1) 0px, transparent 50%);
+function selectTopic(topic) {
+    state.activeTopic = topic;
+    state.viewed.add(topic.id);
+    renderContent();
+    renderList(topics);
+    updateProgress();
 }
 
-/* Sidebar */
-.sidebar {
-    width: 280px;
-    background: var(--glass-bg);
-    backdrop-filter: blur(20px);
-    border-right: 1px solid var(--glass-border);
-    padding: 2rem;
-    display: flex;
-    flex-direction: column;
+function renderContent() {
+    const topic = state.activeTopic;
+    if(!topic) return;
+
+    document.getElementById('activeTopicTitle').innerText = topic.title;
+    document.getElementById('activeTopicTagline').innerText = topic.tagline;
+    
+    let text = topic.content[state.level];
+    
+    // Keyword Highlighting Logic
+    if(state.level === 'pro') {
+        topic.keywords.forEach(word => {
+            const regex = new RegExp(`(${word})`, 'gi');
+            text = text.replace(regex, `<span class="keyword">$1</span>`);
+        });
+    }
+
+    document.getElementById('displayText').innerHTML = text;
+
+    // Show Code Example
+    const codeBox = document.getElementById('codeExample');
+    if(topic.code) {
+        codeBox.style.display = 'block';
+        codeBox.innerText = topic.code;
+    } else {
+        codeBox.style.display = 'none';
+    }
 }
 
-.logo { display: flex; align-items: center; gap: 12px; margin-bottom: 3rem; font-weight: 700; font-size: 1.5rem; }
+// Search Logic
+document.getElementById('searchInput').oninput = (e) => {
+    const query = e.target.value.toLowerCase();
+    const filtered = topics.filter(t => t.title.toLowerCase().includes(query));
+    renderList(filtered);
+};
 
-.topic-item {
-    padding: 12px 16px;
-    margin-bottom: 8px;
-    border-radius: 12px;
-    cursor: pointer;
-    transition: 0.2s;
-    color: var(--text-dim);
+// Progress Tracker
+function updateProgress() {
+    const total = topics.length;
+    const current = state.viewed.size;
+    const percent = (current / total) * 100;
+    
+    document.getElementById('progressText').innerText = `${current}/${total}`;
+    document.getElementById('progressFill').style.width = `${percent}%`;
 }
 
-.topic-item:hover, .topic-item.active {
-    background: rgba(255, 255, 255, 0.05);
-    color: var(--text);
-    transform: translateX(5px);
-}
-
-/* Content Area */
-.content-stage { flex: 1; padding: 3rem; max-width: 1000px; margin: 0 auto; }
-
-.difficulty-switcher {
-    display: flex;
-    gap: 8px;
-    background: rgba(0,0,0,0.3);
-    padding: 6px;
-    border-radius: 14px;
-    border: 1px solid var(--glass-border);
-}
-
-.level-btn {
-    padding: 10px 20px;
-    border: none;
-    background: transparent;
-    color: var(--text-dim);
-    border-radius: 10px;
-    cursor: pointer;
-    font-weight: 600;
-}
-
-.level-btn.active {
-    background: var(--primary);
-    color: white;
-    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
-}
-
-/* Glass Card */
-.glass-card {
-    background: var(--glass-bg);
-    backdrop-filter: blur(20px) saturate(180%);
-    border: 1px solid var(--glass-border);
-    border-radius: 32px;
-    padding: 3rem;
-    margin-top: 2rem;
-    min-height: 400px;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-}
-
-.text-container p {
-    font-size: 1.4rem;
-    line-height: 1.8;
-    font-weight: 300;
-}
-
-.keyword {
-    background: linear-gradient(120deg, rgba(249, 115, 22, 0.2) 0%, rgba(249, 115, 22, 0) 100%);
-    color: var(--accent);
-    padding: 2px 4px;
-    border-radius: 4px;
-}
-
-/* Mobile Responsive */
-@media (max-width: 768px) {
-    body { flex-direction: column; }
-    .sidebar { width: 100%; border-right: none; border-bottom: 1px solid var(--glass-border); }
-}
+init();
