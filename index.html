@@ -1,83 +1,60 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Explain Like I'm 5 | Tech Demystified</title>
+    <title>ELI5 | Explain Like I'm Five</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="background-wrapper">
-        <div class="stars"></div>
-        <div class="orb orb-1"></div>
-        <div class="orb orb-2"></div>
-    </div>
-
-    <div class="app-container">
-        <header class="glass-nav">
-            <div class="logo">🧠 Explain Like I'm 5</div>
-            <div class="nav-actions">
-                <button class="icon-btn">❤️</button>
-                <button class="icon-btn">🕒</button>
-                <button class="icon-btn" id="themeToggle">🌙</button>
-                <button class="icon-btn">⚙️</button>
-            </div>
-        </header>
-
-        <div class="difficulty-bar glass">
-            <button class="level-btn" data-level="child">😊 Child</button>
-            <button class="level-btn active" data-level="beginner">🙂 Beginner</button>
-            <button class="level-btn" data-level="pro">👽 Pro</button>
-            <div class="toggle-group">
-                <div class="switch"></div>
-                <span>💬</span>
-                <span>⚙️</span>
-            </div>
+    <div class="bg-particles"></div>
+    
+    <nav class="navbar glass">
+        <div class="logo">🧠 <span>ELI5</span></div>
+        <div class="nav-actions">
+            <button id="theme-toggle" class="icon-btn">🌓</button>
+            <button class="icon-btn">⚙️</button>
         </div>
+    </nav>
 
-        <section class="topic-selector glass">
-            <p class="label">Select a Topic:</p>
-            <div class="topic-grid" id="topicGrid">
-                </div>
+    <main class="container">
+        <section class="difficulty-section">
+            <div class="pill-selector glass">
+                <button class="diff-btn active" data-level="child">👶 Child</button>
+                <button class="diff-btn" data-level="beginner">🙂 Beginner</button>
+                <button class="diff-btn" data-level="pro">🧠 Pro</button>
+            </div>
         </section>
 
-        <main class="display-card glass">
-            <div class="card-header">
-                <h2 id="topicTitle">What's Blockchain?</h2>
-                <div class="header-dots"><span>•••</span> <span>⌄</span></div>
-                <div class="lightbulb">💡</div>
-            </div>
+        <section class="topic-grid" id="topic-grid">
+            </section>
 
-            <div class="visual-area">
-                <div class="blockchain-viz" id="visualPlaceholder">
-                                    </div>
-            </div>
-
-            <div class="content-body">
-                <p id="explanationText" class="typing">Blockchain is like a digital ledger where information is stored in linked blocks across many computers...</p>
+        <section class="explanation-container">
+            <div class="main-card glass" id="main-card">
+                <div class="card-header">
+                    <h2 id="topic-title">Select a Topic</h2>
+                    <div id="reading-time" class="badge">0 min read</div>
+                </div>
                 
-                <div class="tags" id="keywordTags">
-                    <span class="tag">Digital Ledger</span>
-                    <span class="tag">Decentralized</span>
-                    <span class="tag">Secure</span>
+                <div class="illustration-area" id="illustration">✨</div>
+
+                <div class="content-box">
+                    <p id="explanation-text">Choose a topic above to start learning!</p>
+                    <div class="typing-cursor"></div>
+                </div>
+
+                <div class="action-bar">
+                    <button class="action-btn" id="listen-btn" title="Listen">🔊</button>
+                    <button class="action-btn" id="copy-btn" title="Copy">📋</button>
+                    <button class="action-btn" id="fav-btn" title="Favorite">⭐</button>
+                    <button class="action-btn" id="share-btn" title="Share">🔗</button>
                 </div>
             </div>
+        </section>
+    </main>
 
-            <footer class="card-footer">
-                <div class="action-buttons">
-                    <button class="action-btn" id="listenBtn">🔊 Listen</button>
-                    <button class="action-btn" id="copyBtn">📋 Copy</button>
-                    <button class="action-btn">⭐ Favorite</button>
-                    <button class="action-btn">🔗 Share</button>
-                </div>
-                <div class="meta-footer">
-                    <span id="readingTime">Reading Time: 30 sec</span>
-                    <span id="recentViewed">Recently Viewed: AI, Internet</span>
-                </div>
-            </footer>
-        </main>
-    </div>
+    <div id="toast" class="toast glass">Copied to clipboard!</div>
 
     <script src="script.js"></script>
 </body>
