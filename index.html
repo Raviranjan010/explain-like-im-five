@@ -3,30 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ELI5 // Tech Simplified</title>
+    <title>ELI5 // The Tech Translator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;500;700&display=swap" rel="stylesheet">
 </head>
 <body class="dark-theme">
     <div class="mesh-gradient"></div>
+    <div class="particles" id="particles"></div>
     
-    <nav class="sidebar">
+    <button class="menu-toggle" id="menuToggle" aria-label="Toggle Menu">☰</button>
+    
+    <nav class="sidebar" id="sidebar">
         <div class="logo">
             <span class="logo-icon">✨</span>
             <span class="logo-text">ELI5</span>
         </div>
-        <div class="topic-list" id="topicList">
+
+        <div class="search-box">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="searchInput" placeholder="Search concepts...">
+        </div>
+        
+        <div id="topicList" class="topic-scroll-area">
             </div>
+
         <div class="sidebar-footer">
-            <button class="theme-toggle" id="themeToggle">🌓 Mode</button>
+            <button class="theme-toggle" id="themeToggle">
+                <span id="themeIcon">🌙</span>
+                <span id="themeText">Dark Mode</span>
+            </button>
         </div>
     </nav>
 
     <main class="content-stage">
         <header class="app-header">
             <div class="header-info">
-                <h1 id="activeTopicTitle">Welcome to ELI5</h1>
-                <p id="activeTopicTagline">Select a topic to demystify complex tech.</p>
+                <h1 id="activeTopicTitle">Start Learning</h1>
+                <p id="activeTopicTagline">Demystifying tech concepts with clarity.</p>
             </div>
             
             <div class="difficulty-switcher">
@@ -41,17 +54,31 @@
                 <div class="card-header">
                     <span class="reading-time" id="readingTime">0 min read</span>
                     <div class="card-controls">
-                        <button class="icon-btn" id="favoriteBtn" title="Favorite">❤️</button>
-                        <button class="icon-btn" id="copyBtn" title="Copy Text">🔗</button>
-                        <button class="icon-btn" id="speakBtn" title="Listen">🔊</button>
+                        <button class="icon-btn" id="favoriteBtn">❤️</button>
+                        <button class="icon-btn" id="copyBtn">📋</button>
+                        <button class="icon-btn" id="speakBtn">🔊</button>
                     </div>
                 </div>
+                
                 <div class="text-container">
-                    <p id="displayText" class="type-animation">Select a technical concept from the sidebar to begin your journey...</p>
+                    <p id="displayText">Select a concept from the sidebar to begin your journey.</p>
+                </div>
+
+                <div id="codeExample" class="code-container" style="display: none;"></div>
+                <div id="relatedTopics" class="related-container" style="display: none;"></div>
+                
+                <div class="progress-section" id="progressContainer">
+                    <div class="progress-info">
+                        <span>Concepts Explored</span>
+                        <span id="progressText">0/0</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
                 </div>
             </div>
         </section>
-    </nav>
+    </main>
 
     <div id="toast" class="toast">Action Successful!</div>
 
