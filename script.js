@@ -1,61 +1,40 @@
-const topicData = {
-    blockchain: {
-        title: "Blockchain", icon: "🔗",
-        child: "A digital Lego tower where blocks are stuck together forever.",
-        beginner: "A shared digital list that everyone can see but no one can change.",
-        pro: "A decentralized ledger using cryptography to ensure data immutability."
-    },
-    ai: {
-        title: "Artificial Intelligence", icon: "🤖",
-        child: "A robot brain that learns from pictures and stories.",
-        beginner: "Computers programmed to think and learn like humans.",
-        pro: "Simulated human intelligence using neural networks and deep learning."
-    },
-    cloud: {
-        title: "Cloud Computing", icon: "☁️",
-        child: "Storing your toys in a giant toy box in the sky so you can play anywhere.",
-        beginner: "Using the internet to store files instead of your own computer.",
-        pro: "On-demand delivery of IT resources over the internet with pay-as-you-go pricing."
-    }
-};
+const topics = [
+    "How does the internet travel under the ocean?",
+    "Why is the sky blue but space black?",
+    "How do credit cards actually work?",
+    "What is a Black Hole in simple words?",
+    "How does a giant ship stay afloat?"
+];
 
-let currentTopic = "blockchain";
-let currentLevel = "child";
-let xp = 0;
+const searchBtn = document.getElementById('search-btn');
+const magicBtn = document.getElementById('random-magic');
+const input = document.getElementById('topic-input');
+const resultBox = document.getElementById('result-box');
+const resultTitle = document.getElementById('result-title');
 
-function updateUI() {
-    const data = topicData[currentTopic];
-    document.getElementById('display-title').innerText = "What is " + data.title + "?";
-    document.getElementById('topic-icon').innerText = data.icon;
-    document.getElementById('display-text').innerText = data[currentLevel];
-}
-
-document.querySelectorAll('.diff-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-        document.querySelectorAll('.diff-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        currentLevel = btn.dataset.level;
-        updateUI();
-    });
-});
-
-document.getElementById('topicSearch').addEventListener('keyup', (e) => {
-    const val = e.target.value.toLowerCase();
-    if (topicData[val]) {
-        currentTopic = val;
-        updateUI();
+// Simulate the "Explanation" feature
+searchBtn.addEventListener('click', () => {
+    const val = input.value;
+    if(val) {
+        resultBox.style.display = 'block';
+        resultTitle.innerText = val;
+        // In a real app, you would fetch an API response here
+        window.scrollTo({ top: resultBox.offsetTop - 50, behavior: 'smooth' });
     }
 });
 
-function speakText() {
-    const text = document.getElementById('display-text').innerText;
-    window.speechSynthesis.speak(new SpeechSynthesisUtterance(text));
-}
+// Magic Suggestion Feature
+magicBtn.addEventListener('click', () => {
+    const randomTopic = topics[Math.floor(Math.random() * topics.length)];
+    input.value = randomTopic;
+    input.focus();
+});
 
-function takeQuiz() {
-    xp += 20;
-    if(xp > 100) xp = 100;
-    document.getElementById('xp-fill').style.width = xp + "%";
-    document.getElementById('xp-count').innerText = xp;
-    alert("Knowledge confirmed! +20 XP");
-}
+// UI Interaction: Tag clicks
+document.querySelectorAll('.tag').forEach(tag => {
+    if(tag.id !== 'random-magic') {
+        tag.addEventListener('click', () => {
+            input.value = "Explain " + tag.innerText + " to me...";
+        });
+    }
+});
