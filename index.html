@@ -8,22 +8,16 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="background-blobs"></div>
-    
     <div class="xp-bar-container">
         <div id="xp-fill" class="xp-fill"></div>
-        <span class="xp-text">Level 1: Novice Explorer ( <span id="xp-count">0</span> XP)</span>
+        <span class="xp-text">Level 1: Novice Explorer (<span id="xp-count">0</span> XP)</span>
     </div>
 
     <div class="container">
         <header class="glass-nav">
             <div class="logo">🧠 ELIF</div>
             <div class="search-box">
-                <input type="text" id="topicSearch" placeholder="Search topic...">
-            </div>
-            <div class="nav-icons">
-                <span class="icon">🔔</span>
-                <span class="icon">👤</span>
+                <input type="text" id="topicSearch" placeholder="Try 'AI' or 'Cloud'...">
             </div>
         </header>
 
@@ -35,30 +29,11 @@
 
         <main class="content-card glass" id="mainCard">
             <div class="lightbulb">💡</div>
-            
-            <div class="card-header">
-                <h2 id="display-title">What is Blockchain?</h2>
-                <div class="reading-time">⏱️ 30s read</div>
-            </div>
-
-            <div class="visual-area">
-                <div class="floating-icon" id="topic-icon">🔗</div>
-            </div>
-
-            <div class="explanation-box">
-                <p id="display-text">Blockchain is like a digital Lego tower. Everyone can see it, but no one can break it or take a piece away once it's built!</p>
-            </div>
-
-            <div class="tag-container" id="tag-container">
-                <span class="tag">#DigitalLedger</span>
-                <span class="tag">#Security</span>
-                <span class="tag">#Web3</span>
-            </div>
-
+            <h2 id="display-title">What is Blockchain?</h2>
+            <div class="visual-area"><div class="floating-icon" id="topic-icon">🔗</div></div>
+            <div class="explanation-box"><p id="display-text">Blockchain is like a digital Lego tower. Everyone can see it, but no one can break it!</p></div>
             <div class="action-grid">
                 <button onclick="speakText()" class="action-btn">🔊 Listen</button>
-                <button onclick="copyText()" class="action-btn">📋 Copy</button>
-                <button onclick="markFavorite()" class="action-btn">⭐ Favorite</button>
                 <button onclick="takeQuiz()" class="action-btn primary">📝 Quiz +10XP</button>
             </div>
         </main>
