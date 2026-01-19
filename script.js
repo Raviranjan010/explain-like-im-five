@@ -1,102 +1,96 @@
-const state = {
-    topics: [],
-    currentTopic: null,
-    level: localStorage.getItem('eli5_level') || 'child',
-    isDark: localStorage.getItem('eli5_theme') === 'dark'
+const topicData = {
+    blockchain: {
+        title: "What is Blockchain?",
+        icon: "🔗",
+        tags: ["#Web3", "#Security", "#Lego"],
+        child: "Imagine a digital Lego tower. Everyone can see it, but no one can break it or take a piece away once it's built!",
+        beginner: "A decentralized digital ledger that records transactions across many computers so the record cannot be changed retroactively.",
+        pro: "A peer-to-peer distributed ledger technology that utilizes cryptographic hashing and consensus algorithms to ensure immutability."
+    },
+    ai: {
+        title: "What is AI?",
+        icon: "🤖",
+        tags: ["#Smart", "#MachineLearning", "#Future"],
+        child: "It's like a robot brain that learns by looking at millions of pictures, just like how you learn your ABCs!",
+        beginner: "Software designed to simulate human intelligence, allowing machines to recognize patterns and make decisions.",
+        pro: "A branch of computer science focused on building systems capable of performing tasks that typically require human cognition, such as NLP and neural networks."
+    }
 };
 
-// Initialize
-async function init() {
-    // In a real app, use fetch('data/topics.json')
-    // For this demo, we'll use a constant or local data
-    state.topics = [
-        { id: 'ai', title: 'Artificial Intelligence', icon: '🤖', explanations: { child: "A robot brain that learns like you!", beginner: "Software that mimics human thought.", pro: "Neural networks processing <span class='highlight'>big data</span>." } },
-        { id: 'blockchain', title: 'Blockchain', icon: '🔗', explanations: { child: "A digital Lego tower everyone watches.", beginner: "A shared digital record book.", pro: "<span class='highlight'>Decentralized</span> ledger technology." } }
-    ];
-    
-    renderTopics();
-    setupEventListeners();
-    applyTheme();
-}
+let currentTopic = "blockchain";
+let currentLevel = "child";
+let xp = 0;
 
-function renderTopics() {
-    const grid = document.getElementById('topic-grid');
-    grid.innerHTML = state.topics.map(t => `
-        <div class="topic-card glass" onclick="selectTopic('${t.id}')">
-            <div style="font-size: 2rem">${t.icon}</div>
-            <div style="font-size: 0.8rem; font-weight: 600; margin-top:10px">${t.title}</div>
-        </div>
-    `).join('');
-}
-
-function selectTopic(id) {
-    state.currentTopic = state.topics.find(t => t.id === id);
-    updateUI();
-}
-
+// --- Update UI ---
 function updateUI() {
-    if (!state.currentTopic) return;
+    const data = topicData[currentTopic];
+    const textElement = document.getElementById('display-text');
     
-    const text = state.currentTopic.explanations[state.level];
-    document.getElementById('topic-title').innerText = state.currentTopic.title;
-    document.getElementById('illustration').innerText = state.currentTopic.icon;
+    // Add fade effect
+    textElement.style.opacity = 0;
     
-    typeWriter(text);
-    calculateReadingTime(text);
+    setTimeout(() => {
+        document.getElementById('display-title').innerText = data.title;
+        document.getElementById('topic-icon').innerText = data.icon;
+        textElement.innerText = data[currentLevel];
+        
+        // Update Tags
+        const tagContainer = document.getElementById('tag-container');
+        tagContainer.innerHTML = data.tags.map(t => `<span class="tag">${t}</span>`).join('');
+        
+        textElement.style.opacity = 1;
+    }, 300);
 }
 
-function typeWriter(text) {
-    const el = document.getElementById('explanation-text');
-    el.innerHTML = '';
-    let i = 0;
-    const speed = state.level === 'child' ? 50 : 20; // Slower for kids
+// --- Difficulty Level Switcher ---
+document.querySelectorAll('.diff-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+        document.querySelectorAll('.diff-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentLevel = btn.dataset.level;
+        updateUI();
+    });
+});
+
+// --- Text to Speech (Functional) ---
+function speakText() {
+    const text = document.getElementById('display-text').innerText;
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.pitch = 1.2;
+    utterance.rate = 1.0;
+    window.speechSynthesis.speak(utterance);
+}
+
+// --- Gamification (XP System) ---
+function takeQuiz() {
+    xp += 10;
+    if (xp > 100) xp = 100; // Cap at 100 for this demo
+    document.getElementById('xp-fill').style.width = xp + "%";
+    document.getElementById('xp-count').innerText = xp;
     
-    function type() {
-        if (i < text.length) {
-            // Handle HTML tags for Pro mode highlights
-            if (text[i] === '<') {
-                const tagEnd = text.indexOf('>', i);
-                el.innerHTML += text.substring(i, tagEnd + 1);
-                i = tagEnd + 1;
-            } else {
-                el.innerHTML += text[i];
-                i++;
-            }
-            setTimeout(type, speed);
+    const mainCard = document.getElementById('mainCard');
+    mainCard.style.transform = "scale(1.02)";
+    setTimeout(() => mainCard.style.transform = "scale(1)", 200);
+    
+    alert("Great job! You earned 10 XP for learning about " + currentTopic);
+}
+
+// --- Copy to Clipboard ---
+function copyText() {
+    const text = document.getElementById('display-text').innerText;
+    navigator.clipboard.writeText(text);
+    alert("Copied to clipboard!");
+}
+
+// --- Search Implementation ---
+document.getElementById('topicSearch').addEventListener('keypress', function (e) {
+    if (e.key === 'Enter') {
+        const val = this.value.toLowerCase();
+        if (topicData[val]) {
+            currentTopic = val;
+            updateUI();
+        } else {
+            alert("Topic not found! Try 'AI' or 'Blockchain'");
         }
     }
-    type();
-}
-
-function setupEventListeners() {
-    // Difficulty buttons
-    document.querySelectorAll('.diff-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            document.querySelectorAll('.diff-btn').forEach(b => b.classList.remove('active'));
-            e.target.classList.add('active');
-            state.level = e.target.dataset.level;
-            localStorage.setItem('eli5_level', state.level);
-            updateUI();
-        });
-    });
-
-    // Theme Toggle
-    document.getElementById('theme-toggle').addEventListener('click', () => {
-        state.isDark = !state.isDark;
-        applyTheme();
-    });
-}
-
-function applyTheme() {
-    document.documentElement.setAttribute('data-theme', state.isDark ? 'dark' : 'light');
-    localStorage.setItem('eli5_theme', state.isDark ? 'dark' : 'light');
-}
-
-function calculateReadingTime(text) {
-    const words = text.split(' ').length;
-    const time = Math.ceil(words / 200);
-    document.getElementById('reading-time').innerText = `${time} min read`;
-}
-
-// Start
-init();
+});
