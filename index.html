@@ -1,60 +1,68 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ELI5 | Explain Like I'm Five</title>
+    <title>ELIF | Explain Like I'm 5</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="bg-particles"></div>
+    <div class="background-blobs"></div>
     
-    <nav class="navbar glass">
-        <div class="logo">🧠 <span>ELI5</span></div>
-        <div class="nav-actions">
-            <button id="theme-toggle" class="icon-btn">🌓</button>
-            <button class="icon-btn">⚙️</button>
+    <div class="xp-bar-container">
+        <div id="xp-fill" class="xp-fill"></div>
+        <span class="xp-text">Level 1: Novice Explorer ( <span id="xp-count">0</span> XP)</span>
+    </div>
+
+    <div class="container">
+        <header class="glass-nav">
+            <div class="logo">🧠 ELIF</div>
+            <div class="search-box">
+                <input type="text" id="topicSearch" placeholder="Search topic...">
+            </div>
+            <div class="nav-icons">
+                <span class="icon">🔔</span>
+                <span class="icon">👤</span>
+            </div>
+        </header>
+
+        <div class="difficulty-picker glass">
+            <button class="diff-btn active" data-level="child">👶 Child</button>
+            <button class="diff-btn" data-level="beginner">😊 Beginner</button>
+            <button class="diff-btn" data-level="pro">🧐 Pro</button>
         </div>
-    </nav>
 
-    <main class="container">
-        <section class="difficulty-section">
-            <div class="pill-selector glass">
-                <button class="diff-btn active" data-level="child">👶 Child</button>
-                <button class="diff-btn" data-level="beginner">🙂 Beginner</button>
-                <button class="diff-btn" data-level="pro">🧠 Pro</button>
+        <main class="content-card glass" id="mainCard">
+            <div class="lightbulb">💡</div>
+            
+            <div class="card-header">
+                <h2 id="display-title">What is Blockchain?</h2>
+                <div class="reading-time">⏱️ 30s read</div>
             </div>
-        </section>
 
-        <section class="topic-grid" id="topic-grid">
-            </section>
-
-        <section class="explanation-container">
-            <div class="main-card glass" id="main-card">
-                <div class="card-header">
-                    <h2 id="topic-title">Select a Topic</h2>
-                    <div id="reading-time" class="badge">0 min read</div>
-                </div>
-                
-                <div class="illustration-area" id="illustration">✨</div>
-
-                <div class="content-box">
-                    <p id="explanation-text">Choose a topic above to start learning!</p>
-                    <div class="typing-cursor"></div>
-                </div>
-
-                <div class="action-bar">
-                    <button class="action-btn" id="listen-btn" title="Listen">🔊</button>
-                    <button class="action-btn" id="copy-btn" title="Copy">📋</button>
-                    <button class="action-btn" id="fav-btn" title="Favorite">⭐</button>
-                    <button class="action-btn" id="share-btn" title="Share">🔗</button>
-                </div>
+            <div class="visual-area">
+                <div class="floating-icon" id="topic-icon">🔗</div>
             </div>
-        </section>
-    </main>
 
-    <div id="toast" class="toast glass">Copied to clipboard!</div>
+            <div class="explanation-box">
+                <p id="display-text">Blockchain is like a digital Lego tower. Everyone can see it, but no one can break it or take a piece away once it's built!</p>
+            </div>
+
+            <div class="tag-container" id="tag-container">
+                <span class="tag">#DigitalLedger</span>
+                <span class="tag">#Security</span>
+                <span class="tag">#Web3</span>
+            </div>
+
+            <div class="action-grid">
+                <button onclick="speakText()" class="action-btn">🔊 Listen</button>
+                <button onclick="copyText()" class="action-btn">📋 Copy</button>
+                <button onclick="markFavorite()" class="action-btn">⭐ Favorite</button>
+                <button onclick="takeQuiz()" class="action-btn primary">📝 Quiz +10XP</button>
+            </div>
+        </main>
+    </div>
 
     <script src="script.js"></script>
 </body>
