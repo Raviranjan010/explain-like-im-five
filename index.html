@@ -1,42 +1,51 @@
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-
-<nav>
-    <div class="logo">ELI5<span>.</span></div>
-    <div class="nav-links">
-        <div class="complexity-selector">
-            <span class="mode-label">Mode:</span>
-            <button class="mode-btn active" data-level="5">👶 5yo</button>
-            <button class="mode-btn" data-level="15">Teen</button>
-            <button class="mode-btn" data-level="univ">Grad</button>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ELI5 | Simple Wisdom</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="blob-bg"></div>
+    
+    <nav>
+        <div class="logo">ELI5<span>.</span></div>
+        <div class="nav-links">
+            <button id="theme-toggle">✨ Explore</button>
         </div>
-    </div>
-</nav>
+    </nav>
 
-<section class="explanation-area" id="result-box" style="display: none;">
-    <div class="glass-card">
-        <div class="card-header">
-            <div>
-                <span class="eyebrow">TOPIC DECODED</span>
-                <h2 id="result-title">Quantum Computing</h2>
+    <main>
+        <section class="hero">
+            <h1>Understand <span>Anything.</span></h1>
+            <p>Complex topics broken down into stories a 5-year-old would love.</p>
+            
+            <div class="search-container">
+                <input type="text" id="topic-input" placeholder="Ask me about Quantum Physics, Inflation, or How Planes Fly...">
+                <button id="search-btn">Explain it!</button>
             </div>
-            <div class="action-btns">
-                <button class="icon-btn"><i class="fa-regular fa-copy"></i></button>
-                <button class="icon-btn"><i class="fa-regular fa-heart"></i></button>
+            
+            <div class="quick-tags">
+                <span class="tag">🚀 Space</span>
+                <span class="tag">💰 Economy</span>
+                <span class="tag">🧬 DNA</span>
+                <span class="tag" id="random-magic">🪄 Magic Suggest</span>
             </div>
-        </div>
-        
-        <div class="visual-metaphor">
-            <div class="metaphor-icon">💡</div>
-            <p><strong>The Simple Metaphor:</strong> <span id="metaphor-text">A coin spinning on a table...</span></p>
-        </div>
+        </section>
 
-        <div class="content-divider"></div>
-        
-        <p id="result-text">Full explanation goes here...</p>
-        
-        <div class="did-you-know">
-            <strong>✨ Fun Fact:</strong>
-            <p id="fun-fact">A quantum computer is colder than outer space!</p>
-        </div>
-    </div>
-</section>
+        <section class="explanation-area" id="result-box" style="display: none;">
+            <div class="glass-card">
+                <div class="card-header">
+                    <h3 id="result-title">Quantum Computing</h3>
+                    <span class="badge">Explained</span>
+                </div>
+                <p id="result-text">Imagine you have a library where a book can be on two shelves at the exact same time...</p>
+            </div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
